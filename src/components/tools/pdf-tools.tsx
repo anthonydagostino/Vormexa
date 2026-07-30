@@ -4,6 +4,7 @@ import { ToolFrame } from './ToolFrame'
 import { MultiResult, SingleResult } from './results'
 import { TOOLS } from '@/tools/registry-meta'
 import { outputName, stripExtension } from '@/lib/format'
+import { FREE_BATCH_LIMIT } from '@/config'
 import {
   compressPdf,
   extractPages,
@@ -31,6 +32,7 @@ export function PdfMerge() {
       meta={TOOLS.pdfMerge}
       minFiles={2}
       reorderable
+      proAboveCount={FREE_BATCH_LIMIT}
       actionLabel="Merge PDFs"
       action={async (files, ctx) => {
         const blob = await mergePdfs(files, { onProgress: ctx.onProgress, signal: ctx.signal })
@@ -135,6 +137,7 @@ export function ImagesToPdf() {
       minFiles={1}
       reorderable
       showThumbnails
+      proAboveCount={FREE_BATCH_LIMIT}
       actionLabel="Create PDF"
       controls={() => (
         <div className="flex flex-col gap-5">

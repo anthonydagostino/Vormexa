@@ -5,9 +5,12 @@ import { Home } from '@/pages/Home'
 import { Pricing } from '@/pages/Pricing'
 import { Workspace } from '@/pages/Workspace'
 import { ToolPage } from '@/pages/ToolPage'
+import { Account } from '@/pages/Account'
 import { NotFound } from '@/pages/NotFound'
+import { useLicenseRefresh } from '@/hooks/usePro'
 
 export default function App() {
+  useLicenseRefresh()
   return (
     <BrowserRouter>
       <Routes>
@@ -17,6 +20,7 @@ export default function App() {
         </Route>
         <Route path="/app" element={<AppLayout />}>
           <Route index element={<Workspace />} />
+          <Route path="account" element={<Account />} />
           <Route path=":category/:slug" element={<ToolPage />} />
           <Route path="*" element={<NotFound />} />
         </Route>

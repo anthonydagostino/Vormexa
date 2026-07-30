@@ -7,6 +7,7 @@ import { TOOLS } from '@/tools/registry-meta'
 import { useMediaInfo } from '@/hooks/useMediaInfo'
 import { probeAudio } from '@/lib/probe'
 import { outputName } from '@/lib/format'
+import { FREE_BATCH_LIMIT } from '@/config'
 import {
   AUDIO_FORMATS,
   compressAudio,
@@ -203,6 +204,7 @@ export function AudioMerge() {
       engine
       minFiles={2}
       reorderable
+      proAboveCount={FREE_BATCH_LIMIT}
       actionLabel="Merge audio"
       controls={() => (
         <Field label="Output format">

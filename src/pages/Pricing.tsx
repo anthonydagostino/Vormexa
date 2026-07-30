@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Check, Sparkles } from 'lucide-react'
 import { Button, Segmented } from '@/components/ui/primitives'
+import { CONTACT_EMAIL, lemon, paymentsConfigured } from '@/config'
 
 interface Tier {
   name: string
@@ -24,6 +25,7 @@ const TIERS: Tier[] = [
     features: [
       'All 20+ browser tools',
       'Video, photo, audio & PDF',
+      'Up to 3 files per job',
       '100% on-device & private',
       'No watermarks',
       'Works offline (PWA)',
@@ -39,8 +41,9 @@ const TIERS: Tier[] = [
     highlight: true,
     features: [
       'Everything in Free',
-      'Native desktop apps for Mac & Windows',
+      'Unlimited files per job',
       'Batch processing — whole folders at once',
+      'Native desktop apps for Mac & Windows',
       'Multi-thread engine for max speed',
       'Advanced export presets',
       'Priority email support',
@@ -123,19 +126,7 @@ export function Pricing() {
               </p>
             )}
 
-            {tier.name === 'Business' ? (
-              <a href="mailto:sales@vormexa.app?subject=Vormexa%20Business" className="mt-6">
-                <Button variant={tier.highlight ? 'primary' : 'secondary'} className="w-full">
-                  {tier.cta}
-                </Button>
-              </a>
-            ) : (
-              <Link to="/app" className="mt-6">
-                <Button variant={tier.highlight ? 'primary' : 'secondary'} className="w-full">
-                  {tier.cta}
-                </Button>
-              </Link>
-            )}
+            <TierCta tier={tier} />
 
             <ul className="mt-7 flex flex-col gap-3">
               {tier.features.map((f) => (
@@ -150,6 +141,51 @@ export function Pricing() {
 
       <FAQ />
     </div>
+  )
+}
+
+function TierCta({ tier }: { tier: Tier }) {
+  const variant = tier.highlight ? 'primary' : 'secondary'
+  const className = 'mt-6'
+
+  // Free → open the app. Pro → hosted checkout (or activation fallback).
+  // Business → sales email.
+  if (tier.name === 'Free') {
+    return (
+      <Link to="/app" className={className}>
+        <Button variant={variant} className="w-full">
+          {tier.cta}
+        </Button>
+      </Link>
+    )
+  }
+
+  if (tier.name === 'Business') {
+    return (
+      <a href={`mailto:${CONTACT_EMAIL}?subject=Vormexa%20Business`} className={className}>
+        <Button variant={variant} className="w-full">
+          {tier.cta}
+        </Button>
+      </a>
+    )
+  }
+
+  // Pro
+  if (paymentsConfigured) {
+    return (
+      <a href={lemon.checkoutUrl} target="_blank" rel="noopener noreferrer" className={className}>
+        <Button variant={variant} className="w-full">
+          {tier.cta}
+        </Button>
+      </a>
+    )
+  }
+  return (
+    <Link to="/app/account" className={className}>
+      <Button variant={variant} className="w-full">
+        {tier.cta}
+      </Button>
+    </Link>
   )
 }
 

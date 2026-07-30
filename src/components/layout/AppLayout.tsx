@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
-import { Menu, Search, ShieldCheck, X } from 'lucide-react'
+import { Menu, Search, Sparkles, ShieldCheck, UserRound, X } from 'lucide-react'
 import { ALL_TOOLS, CATEGORIES, searchTools } from '@/tools/registry-meta'
 import { toolPath } from '@/tools/types'
 import { Logo } from './Logo'
 import { cn } from '@/lib/cn'
+import { usePro } from '@/hooks/usePro'
+import { ProBadge } from '@/components/pro/UpgradeGate'
 
 export function AppLayout() {
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -81,8 +83,9 @@ export function AppLayout() {
           )}
         </nav>
 
-        <div className="border-t border-white/5 px-5 py-3 text-xs text-slate-500">
-          <span className="inline-flex items-center gap-1.5">
+        <div className="border-t border-white/5 p-3">
+          <ProSidebarCard onNavigate={() => setMobileOpen(false)} />
+          <span className="mt-3 flex items-center gap-1.5 px-2 text-xs text-slate-500">
             <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" /> 100% offline & private
           </span>
         </div>
@@ -116,6 +119,33 @@ export function AppLayout() {
         </main>
       </div>
     </div>
+  )
+}
+
+function ProSidebarCard({ onNavigate }: { onNavigate: () => void }) {
+  const { isPro } = usePro()
+  if (isPro) {
+    return (
+      <Link
+        to="/app/account"
+        onClick={onNavigate}
+        className="flex items-center gap-2.5 rounded-xl border border-emerald-500/20 bg-emerald-500/[0.06] px-3 py-2.5 text-sm font-medium text-slate-200 hover:bg-emerald-500/10"
+      >
+        <UserRound className="h-4 w-4 text-emerald-400" />
+        <span className="flex-1">Your account</span>
+        <ProBadge />
+      </Link>
+    )
+  }
+  return (
+    <Link
+      to="/app/account"
+      onClick={onNavigate}
+      className="flex items-center gap-2.5 rounded-xl border border-brand-500/30 bg-gradient-to-br from-brand-600/20 to-accent-500/10 px-3 py-2.5 text-sm font-semibold text-white transition-colors hover:from-brand-600/30"
+    >
+      <Sparkles className="h-4 w-4 text-brand-300" />
+      <span className="flex-1">Upgrade to Pro</span>
+    </Link>
   )
 }
 

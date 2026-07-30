@@ -8,6 +8,8 @@ import { useProcessor, type JobContext } from '@/hooks/useProcessor'
 import { engineMode, isMultiThreadAvailable } from '@/lib/ffmpeg'
 import type { ToolMeta } from '@/tools/types'
 import { formatPercent } from '@/lib/format'
+import { usePro } from '@/hooks/usePro'
+import { UpgradeGate } from '@/components/pro/UpgradeGate'
 
 interface ToolFrameProps<TResult> {
   meta: ToolMeta
@@ -18,6 +20,8 @@ interface ToolFrameProps<TResult> {
   showThumbnails?: boolean
   actionLabel?: string
   helpNote?: ReactNode
+  /** When set, processing more than this many files at once requires Pro. */
+  proAboveCount?: number
   validate?: (files: File[]) => string | null
   controls?: (files: File[]) => ReactNode
   action: (files: File[], ctx: JobContext) => Promise<TResult>
@@ -32,12 +36,14 @@ export function ToolFrame<TResult>({
   showThumbnails,
   actionLabel,
   helpNote,
+  proAboveCount,
   validate,
   controls,
   action,
   renderResult,
 }: ToolFrameProps<TResult>) {
   const [files, setFiles] = useState<File[]>([])
+  const { isPro } = usePro()
   const { status, busy, progress, engineProgress, error, result, run, cancel, reset } =
     useProcessor<TResult>()
 
@@ -76,7 +82,9 @@ export function ToolFrame<TResult>({
     return validate?.(files) ?? null
   }, [files, minFiles, validate])
 
-  const canRun = files.length >= minFiles && !validationError && !busy
+  const overFreeLimit =
+    proAboveCount != null && files.length > proAboveCount && !isPro
+  const canRun = files.length >= minFiles && !validationError && !overFreeLimit && !busy
 
   const handleRun = () => {
     run((ctx) => action(files, ctx), { engine })
@@ -153,7 +161,7 @@ export function ToolFrame<TResult>({
             </div>
           </>
         ) : busy ? (
-          <div className="card flex flex-col gap-3 p-5">
+          <div key="busy" className="card flex flex-col gap-3 p-5">
             <div className="flex items-center justify-between text-sm">
               <span className="font-medium text-slate-200">
                 {status === 'loading-engine'
@@ -176,6 +184,11 @@ export function ToolFrame<TResult>({
               Cancel
             </Button>
           </div>
+        ) : overFreeLimit ? (
+          <UpgradeGate
+            title={`Process ${files.length} files at once`}
+            benefit={`The free plan handles up to ${proAboveCount} file${proAboveCount === 1 ? '' : 's'} per job. Upgrade to Pro for unlimited batch & bulk processing.`}
+          />
         ) : (
           <Button
             size="lg"

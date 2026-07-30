@@ -14,6 +14,7 @@ import {
   type ResizeMode,
 } from '@/lib/image'
 import { outputName } from '@/lib/format'
+import { FREE_BATCH_LIMIT } from '@/config'
 
 type OutFormat = 'auto' | ImageFormat
 
@@ -429,6 +430,7 @@ export function ImageMerge() {
       minFiles={2}
       reorderable
       showThumbnails
+      proAboveCount={FREE_BATCH_LIMIT}
       actionLabel="Merge images"
       controls={() => (
         <div className="flex flex-col gap-5">

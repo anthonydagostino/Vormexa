@@ -7,6 +7,7 @@ import { TOOLS } from '@/tools/registry-meta'
 import { useMediaInfo } from '@/hooks/useMediaInfo'
 import { probeVideo } from '@/lib/probe'
 import { outputName } from '@/lib/format'
+import { FREE_BATCH_LIMIT } from '@/config'
 import {
   compressVideo,
   convertVideo,
@@ -336,6 +337,7 @@ export function VideoMerge() {
       engine
       minFiles={2}
       reorderable
+      proAboveCount={FREE_BATCH_LIMIT}
       actionLabel="Merge videos"
       helpNote="Clips are normalized to 1280×720 · 30fps so mismatched sources join cleanly."
       action={async (files, ctx) => {

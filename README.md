@@ -135,10 +135,51 @@ errors and results. Adding a tool is mostly metadata + a `~40-line` component.
 
 ## 📈 Business model
 
-Vormexa ships as **free** in the browser with paid **Pro** (native desktop apps,
-batch processing, presets) and **Business** (commercial licensing, on-prem,
+Vormexa ships as **free** in the browser with paid **Pro** (unlimited batch/bulk,
+native desktop apps, presets) and **Business** (commercial licensing, on-prem,
 volume seats) tiers — see the in-app pricing page. Because there's no server-side
 processing, gross margins stay high and the app scales without infrastructure.
+
+The free tier handles everyday **single-file** and small jobs (up to
+`FREE_BATCH_LIMIT`, default 3, files per merge/batch). **Pro** unlocks unlimited
+batch — the paywall is enforced in `ToolFrame` via the `proAboveCount` prop.
+
+## 💳 Turning on payments (Pro)
+
+Payments use **Lemon Squeezy** — a Merchant of Record (owned by Stripe). It's the
+right fit here for two reasons:
+
+1. **Global tax handled for you.** Lemon Squeezy is the legal seller, so it
+   collects & remits VAT/GST/sales tax worldwide. With raw Stripe *you* are the
+   merchant of record and own that compliance.
+2. **No backend needed.** It issues **license keys** validated against a public,
+   CORS-enabled API — so the client-side app can check "is this user Pro?"
+   without any server. Raw Stripe would force you to build one.
+
+License validation is intentionally *soft* DRM (state lives in `localStorage`),
+which is the correct trade-off for a client-side tool: you're selling
+convenience & the desktop app, not un-crackable access.
+
+### Setup (about 15 minutes)
+
+1. Create a [Lemon Squeezy](https://www.lemonsqueezy.com/) account and a **store**.
+2. Add a **product** for Vormexa Pro. Enable **license keys** on it.
+3. Copy the product's **checkout URL** (Share → Copy link).
+4. Create `.env` from `.env.example` and set `VITE_LS_CHECKOUT_URL` to it.
+5. Rebuild & deploy. The Pricing page and in-app upgrade buttons now point at
+   real checkout; buyers paste their key into **/app/account** to unlock Pro.
+
+No secret keys ever ship in the bundle — the license endpoints are public and
+keyed by the license key itself. Swap in raw Stripe + a small backend later if
+you outgrow the MoR model.
+
+### Next monetization steps (not yet built)
+
+- **Native desktop app** (the seller's proven model): wrap this same codebase
+  with [Tauri](https://tauri.app/) → sellable Mac/Windows apps in the app stores.
+- **Per-tool SEO landing pages** so you rank for "compress video", "merge pdf", etc.
+- **Privacy-friendly analytics** (Plausible / Cloudflare) — never Google Analytics,
+  which would contradict the product's privacy promise.
 
 ## 📄 License
 
