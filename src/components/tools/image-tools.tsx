@@ -71,7 +71,10 @@ export function ImageCompress() {
             />
           </Field>
           {mode === 'quality' ? (
-            <Field label={`Quality · ${Math.round(quality * 100)}%`} hint="Lower quality = smaller file.">
+            <Field
+              label={`Quality · ${Math.round(quality * 100)}%`}
+              hint="Lower quality = smaller file."
+            >
               <Slider min={0.3} max={0.95} step={0.01} value={quality} onChange={setQuality} />
             </Field>
           ) : (
@@ -80,7 +83,12 @@ export function ImageCompress() {
             </Field>
           )}
           <Field label="Max width (optional)" hint="Downscale wide images to save more.">
-            <NumberInput value={maxWidth} onChange={setMaxWidth} suffix="px" placeholder="e.g. 1920" />
+            <NumberInput
+              value={maxWidth}
+              onChange={setMaxWidth}
+              suffix="px"
+              placeholder="e.g. 1920"
+            />
           </Field>
         </div>
       )}
@@ -99,7 +107,12 @@ export function ImageCompress() {
         }
       }}
       renderResult={(r) => (
-        <SingleResult blob={r.blob} filename={r.filename} originalSize={r.originalSize} kind="image" />
+        <SingleResult
+          blob={r.blob}
+          filename={r.filename}
+          originalSize={r.originalSize}
+          kind="image"
+        />
       )}
     />
   )
@@ -140,7 +153,12 @@ export function ImageConvert() {
         }
       }}
       renderResult={(r) => (
-        <SingleResult blob={r.blob} filename={r.filename} originalSize={r.originalSize} kind="image" />
+        <SingleResult
+          blob={r.blob}
+          filename={r.filename}
+          originalSize={r.originalSize}
+          kind="image"
+        />
       )}
     />
   )
@@ -160,19 +178,21 @@ export function ImageResize() {
       showThumbnails
       actionLabel="Resize image"
       validate={() => (width === '' && height === '' ? 'Enter a width or a height.' : null)}
-      controls={(files) => <ResizeFields
-        file={files[0]}
-        width={width}
-        height={height}
-        setWidth={setWidth}
-        setHeight={setHeight}
-        mode={mode}
-        setMode={setMode}
-        noUpscale={noUpscale}
-        setNoUpscale={setNoUpscale}
-        format={format}
-        setFormat={setFormat}
-      />}
+      controls={(files) => (
+        <ResizeFields
+          file={files[0]}
+          width={width}
+          height={height}
+          setWidth={setWidth}
+          setHeight={setHeight}
+          mode={mode}
+          setMode={setMode}
+          noUpscale={noUpscale}
+          setNoUpscale={setNoUpscale}
+          format={format}
+          setFormat={setFormat}
+        />
+      )}
       action={async (files) => {
         const file = files[0]
         const fmt = resolveFormat(format, file)
@@ -193,7 +213,12 @@ export function ImageResize() {
         }
       }}
       renderResult={(r) => (
-        <SingleResult blob={r.blob} filename={r.filename} originalSize={r.originalSize} kind="image" />
+        <SingleResult
+          blob={r.blob}
+          filename={r.filename}
+          originalSize={r.originalSize}
+          kind="image"
+        />
       )}
     />
   )
@@ -285,7 +310,15 @@ export function ImageCrop() {
       showThumbnails
       actionLabel="Crop image"
       helpNote="Vormexa center-crops to the selected aspect ratio, keeping the chosen focus area."
-      controls={(files) => <CropFields file={files[0]} aspect={aspect} setAspect={setAspect} focus={focus} setFocus={setFocus} />}
+      controls={(files) => (
+        <CropFields
+          file={files[0]}
+          aspect={aspect}
+          setAspect={setAspect}
+          focus={focus}
+          setFocus={setFocus}
+        />
+      )}
       action={async (files) => {
         const file = files[0]
         const fmt = resolveFormat('auto', file)
@@ -299,7 +332,12 @@ export function ImageCrop() {
         }
       }}
       renderResult={(r) => (
-        <SingleResult blob={r.blob} filename={r.filename} originalSize={r.originalSize} kind="image" />
+        <SingleResult
+          blob={r.blob}
+          filename={r.filename}
+          originalSize={r.originalSize}
+          kind="image"
+        />
       )}
     />
   )
@@ -403,7 +441,13 @@ export function ImageRotate() {
       action={async (files) => {
         const file = files[0]
         const fmt = resolveFormat('auto', file)
-        const result = await processImage(file, { format: fmt, quality: 0.92, rotate, flipH, flipV })
+        const result = await processImage(file, {
+          format: fmt,
+          quality: 0.92,
+          rotate,
+          flipH,
+          flipV,
+        })
         return {
           blob: result.blob,
           filename: outputName(file.name, 'rotated', IMAGE_EXT[fmt]),
@@ -411,7 +455,12 @@ export function ImageRotate() {
         }
       }}
       renderResult={(r) => (
-        <SingleResult blob={r.blob} filename={r.filename} originalSize={r.originalSize} kind="image" />
+        <SingleResult
+          blob={r.blob}
+          filename={r.filename}
+          originalSize={r.originalSize}
+          kind="image"
+        />
       )}
     />
   )

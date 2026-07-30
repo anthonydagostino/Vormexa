@@ -8,14 +8,34 @@ import { fileURLToPath, URL } from 'node:url'
 // single-threaded core when isolation is unavailable, so the app still works.
 const crossOriginIsolation = {
   name: 'cross-origin-isolation',
-  configureServer(server: { middlewares: { use: (fn: (req: unknown, res: { setHeader: (k: string, v: string) => void }, next: () => void) => void) => void } }) {
+  configureServer(server: {
+    middlewares: {
+      use: (
+        fn: (
+          req: unknown,
+          res: { setHeader: (k: string, v: string) => void },
+          next: () => void,
+        ) => void,
+      ) => void
+    }
+  }) {
     server.middlewares.use((_req, res, next) => {
       res.setHeader('Cross-Origin-Opener-Policy', 'same-origin')
       res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp')
       next()
     })
   },
-  configurePreviewServer(server: { middlewares: { use: (fn: (req: unknown, res: { setHeader: (k: string, v: string) => void }, next: () => void) => void) => void } }) {
+  configurePreviewServer(server: {
+    middlewares: {
+      use: (
+        fn: (
+          req: unknown,
+          res: { setHeader: (k: string, v: string) => void },
+          next: () => void,
+        ) => void,
+      ) => void
+    }
+  }) {
     server.middlewares.use((_req, res, next) => {
       res.setHeader('Cross-Origin-Opener-Policy', 'same-origin')
       res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp')

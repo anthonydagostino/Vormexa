@@ -1,4 +1,9 @@
-import { forwardRef, type ButtonHTMLAttributes, type ReactNode, type SelectHTMLAttributes } from 'react'
+import {
+  forwardRef,
+  type ButtonHTMLAttributes,
+  type ReactNode,
+  type SelectHTMLAttributes,
+} from 'react'
 import { Loader2 } from 'lucide-react'
 import { cn } from '@/lib/cn'
 
@@ -6,8 +11,7 @@ type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'outline'
 type ButtonSize = 'sm' | 'md' | 'lg'
 
 const variants: Record<ButtonVariant, string> = {
-  primary:
-    'bg-brand-gradient text-white shadow-glow hover:brightness-110 active:brightness-95',
+  primary: 'bg-brand-gradient text-white shadow-glow hover:brightness-110 active:brightness-95',
   secondary: 'bg-ink-700 text-slate-100 hover:bg-ink-600',
   ghost: 'bg-transparent text-slate-300 hover:bg-white/5 hover:text-white',
   outline: 'border border-white/15 bg-transparent text-slate-200 hover:bg-white/5',

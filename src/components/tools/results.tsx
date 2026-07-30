@@ -67,13 +67,18 @@ export function SingleResult({
           <p className="text-xs text-slate-500">
             {formatBytes(blob.size)}
             {delta && (
-              <span className={cn('ml-2 font-medium', smaller ? 'text-emerald-400' : 'text-amber-400')}>
+              <span
+                className={cn('ml-2 font-medium', smaller ? 'text-emerald-400' : 'text-amber-400')}
+              >
                 {delta} vs original
               </span>
             )}
           </p>
         </div>
-        <Button icon={<Download className="h-4 w-4" />} onClick={() => downloadBlob(blob, filename)}>
+        <Button
+          icon={<Download className="h-4 w-4" />}
+          onClick={() => downloadBlob(blob, filename)}
+        >
           Download
         </Button>
       </div>
@@ -102,7 +107,12 @@ export function MultiResult({
         <Button
           size="sm"
           icon={<Download className="h-4 w-4" />}
-          onClick={() => downloadZip(items.map((it) => ({ name: it.name, data: it.blob })), zipName)}
+          onClick={() =>
+            downloadZip(
+              items.map((it) => ({ name: it.name, data: it.blob })),
+              zipName,
+            )
+          }
         >
           Download all (.zip)
         </Button>

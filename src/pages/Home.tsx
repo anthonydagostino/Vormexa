@@ -45,8 +45,7 @@ function Hero() {
         </div>
 
         <h1 className="mx-auto max-w-4xl text-4xl font-black leading-[1.05] tracking-tight text-white sm:text-6xl">
-          Edit video, photos, audio & PDFs.{' '}
-          <span className="text-gradient">All in one place.</span>
+          Edit video, photos, audio & PDFs. <span className="text-gradient">All in one place.</span>
         </h1>
         <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-slate-400">
           Vormexa compresses, converts, resizes and merges your media in seconds — right in your
@@ -55,7 +54,11 @@ function Hero() {
 
         <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Link to="/app">
-            <Button size="lg" icon={<ArrowRight className="h-5 w-5" />} className="flex-row-reverse">
+            <Button
+              size="lg"
+              icon={<ArrowRight className="h-5 w-5" />}
+              className="flex-row-reverse"
+            >
               Start editing — it's free
             </Button>
           </Link>
@@ -273,9 +276,21 @@ function Privacy() {
 
 function HowItWorks() {
   const steps = [
-    { n: '1', title: 'Choose a tool', body: 'Pick from 20+ tools for video, photos, audio or PDF.' },
-    { n: '2', title: 'Drop your file', body: 'Drag & drop or browse. It loads instantly — no upload wait.' },
-    { n: '3', title: 'Download result', body: 'Tweak the options, run it, and save the result locally.' },
+    {
+      n: '1',
+      title: 'Choose a tool',
+      body: 'Pick from 20+ tools for video, photos, audio or PDF.',
+    },
+    {
+      n: '2',
+      title: 'Drop your file',
+      body: 'Drag & drop or browse. It loads instantly — no upload wait.',
+    },
+    {
+      n: '3',
+      title: 'Download result',
+      body: 'Tweak the options, run it, and save the result locally.',
+    },
   ]
   return (
     <section className="border-y border-white/5 bg-ink-900/30">
@@ -366,7 +381,11 @@ function CTA() {
         </p>
         <div className="relative mt-8">
           <Link to="/app">
-            <Button size="lg" icon={<ArrowRight className="h-5 w-5" />} className="flex-row-reverse">
+            <Button
+              size="lg"
+              icon={<ArrowRight className="h-5 w-5" />}
+              className="flex-row-reverse"
+            >
               Launch Vormexa
             </Button>
           </Link>

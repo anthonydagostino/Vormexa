@@ -45,7 +45,11 @@ function dims(src: ImageBitmap | HTMLImageElement): { w: number; h: number } {
   return { w: 0, h: 0 }
 }
 
-function canvasToBlob(canvas: HTMLCanvasElement, format: ImageFormat, quality: number): Promise<Blob> {
+function canvasToBlob(
+  canvas: HTMLCanvasElement,
+  format: ImageFormat,
+  quality: number,
+): Promise<Blob> {
   return new Promise((resolve, reject) => {
     canvas.toBlob(
       (blob) => (blob ? resolve(blob) : reject(new Error('Encoding failed'))),
@@ -73,8 +77,8 @@ export interface EncodeOptions {
   background?: string
 }
 
-/** Compute target dimensions honoring the requested resize mode. */
-function computeSize(
+/** Compute target dimensions honoring the requested resize mode. Exported for testing. */
+export function computeSize(
   srcW: number,
   srcH: number,
   opt: ResizeOptions,

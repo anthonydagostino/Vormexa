@@ -54,10 +54,16 @@ export function AppLayout() {
           {query ? (
             <ul className="flex flex-col gap-1">
               {results.map((t) => (
-                <SidebarLink key={`${t.category}/${t.slug}`} to={toolPath(t)} onClick={() => setMobileOpen(false)}>
+                <SidebarLink
+                  key={`${t.category}/${t.slug}`}
+                  to={toolPath(t)}
+                  onClick={() => setMobileOpen(false)}
+                >
                   <t.icon className="h-4 w-4 text-slate-400" />
                   <span className="flex-1">{t.title}</span>
-                  <span className="text-[10px] uppercase tracking-wide text-slate-600">{t.category}</span>
+                  <span className="text-[10px] uppercase tracking-wide text-slate-600">
+                    {t.category}
+                  </span>
                 </SidebarLink>
               ))}
               {results.length === 0 && (

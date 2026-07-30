@@ -76,7 +76,11 @@ export function Dropzone({
           </div>
           <div>
             <p className={cn('font-semibold text-slate-100', compact ? 'text-sm' : 'text-base')}>
-              {dragging ? 'Drop to add' : multiple ? 'Drop files or click to browse' : 'Drop a file or click to browse'}
+              {dragging
+                ? 'Drop to add'
+                : multiple
+                  ? 'Drop files or click to browse'
+                  : 'Drop a file or click to browse'}
             </p>
             <p className="mt-0.5 text-xs text-slate-500">
               Processed on your device — nothing is uploaded.

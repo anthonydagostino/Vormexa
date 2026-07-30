@@ -354,6 +354,9 @@ export function searchTools(query: string): ToolMeta[] {
   const q = query.trim().toLowerCase()
   if (!q) return ALL_TOOLS
   return ALL_TOOLS.filter((t) =>
-    [t.title, t.short, t.description, t.category, ...t.keywords].join(' ').toLowerCase().includes(q),
+    [t.title, t.short, t.description, t.category, ...t.keywords]
+      .join(' ')
+      .toLowerCase()
+      .includes(q),
   )
 }

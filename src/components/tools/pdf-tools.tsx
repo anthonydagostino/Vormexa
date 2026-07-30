@@ -43,7 +43,12 @@ export function PdfMerge() {
         }
       }}
       renderResult={(r) => (
-        <SingleResult blob={r.blob} filename={r.filename} originalSize={r.originalSize} kind="pdf" />
+        <SingleResult
+          blob={r.blob}
+          filename={r.filename}
+          originalSize={r.originalSize}
+          kind="pdf"
+        />
       )}
     />
   )
@@ -62,9 +67,17 @@ export function PdfSplit() {
     <ToolFrame<SplitResult>
       meta={TOOLS.pdfSplit}
       actionLabel="Split PDF"
-      validate={() => (mode === 'range' && !ranges.trim() ? 'Enter a page range, e.g. 1-3, 5.' : null)}
+      validate={() =>
+        mode === 'range' && !ranges.trim() ? 'Enter a page range, e.g. 1-3, 5.' : null
+      }
       controls={(files) => (
-        <SplitFields file={files[0]} mode={mode} setMode={setMode} ranges={ranges} setRanges={setRanges} />
+        <SplitFields
+          file={files[0]}
+          mode={mode}
+          setMode={setMode}
+          ranges={ranges}
+          setRanges={setRanges}
+        />
       )}
       action={async (files, ctx) => {
         const file = files[0]
@@ -75,14 +88,21 @@ export function PdfSplit() {
         const count = await getPdfPageCount(file)
         const indices = parsePageRanges(ranges, count)
         if (indices.length === 0) throw new Error('No valid pages in that range.')
-        const blob = await extractPages(file, indices, { onProgress: ctx.onProgress, signal: ctx.signal })
+        const blob = await extractPages(file, indices, {
+          onProgress: ctx.onProgress,
+          signal: ctx.signal,
+        })
         return { type: 'single', blob, filename: outputName(file.name, 'pages', 'pdf') }
       }}
       renderResult={(r, files) =>
         r.type === 'single' ? (
           <SingleResult blob={r.blob} filename={r.filename} kind="pdf" />
         ) : (
-          <MultiResult items={r.items} zipName={`${stripExtension(files[0].name)}-pages.zip`} kind="file" />
+          <MultiResult
+            items={r.items}
+            zipName={`${stripExtension(files[0].name)}-pages.zip`}
+            kind="file"
+          />
         )
       }
     />
@@ -118,7 +138,12 @@ function SplitFields({
       </Field>
       {mode === 'range' && (
         <Field label="Pages to extract" hint="Examples: 1-3, 5, 8-10">
-          <input className="input" value={ranges} onChange={(e) => setRanges(e.target.value)} placeholder="1-3, 5" />
+          <input
+            className="input"
+            value={ranges}
+            onChange={(e) => setRanges(e.target.value)}
+            placeholder="1-3, 5"
+          />
         </Field>
       )}
     </div>
@@ -166,7 +191,12 @@ export function ImagesToPdf() {
                 />
               </Field>
               <Field label={`Margin · ${margin}pt`}>
-                <Slider min={0} max={72} value={margin} onChange={(v) => setMargin(Math.round(v))} />
+                <Slider
+                  min={0}
+                  max={72}
+                  value={margin}
+                  onChange={(v) => setMargin(Math.round(v))}
+                />
               </Field>
             </>
           )}
@@ -212,7 +242,10 @@ export function PdfToImages() {
               ]}
             />
           </Field>
-          <Field label={`Quality / resolution · ${Math.round(scale * 72)} dpi`} hint="Higher = sharper & larger files.">
+          <Field
+            label={`Quality / resolution · ${Math.round(scale * 72)} dpi`}
+            hint="Higher = sharper & larger files."
+          >
             <Slider min={1} max={4} step={0.5} value={scale} onChange={setScale} />
           </Field>
         </div>
@@ -227,7 +260,11 @@ export function PdfToImages() {
         return { items }
       }}
       renderResult={(r, files) => (
-        <MultiResult items={r.items} zipName={`${stripExtension(files[0].name)}-images.zip`} kind="image" />
+        <MultiResult
+          items={r.items}
+          zipName={`${stripExtension(files[0].name)}-images.zip`}
+          kind="image"
+        />
       )}
     />
   )
@@ -269,10 +306,19 @@ export function PdfCompress() {
           onProgress: ctx.onProgress,
           signal: ctx.signal,
         })
-        return { blob, filename: outputName(file.name, 'compressed', 'pdf'), originalSize: file.size }
+        return {
+          blob,
+          filename: outputName(file.name, 'compressed', 'pdf'),
+          originalSize: file.size,
+        }
       }}
       renderResult={(r) => (
-        <SingleResult blob={r.blob} filename={r.filename} originalSize={r.originalSize} kind="pdf" />
+        <SingleResult
+          blob={r.blob}
+          filename={r.filename}
+          originalSize={r.originalSize}
+          kind="pdf"
+        />
       )}
     />
   )
@@ -300,11 +346,19 @@ export function PdfRotate() {
       )}
       action={async (files, ctx) => {
         const file = files[0]
-        const blob = await rotatePdf(file, angle, { onProgress: ctx.onProgress, signal: ctx.signal })
+        const blob = await rotatePdf(file, angle, {
+          onProgress: ctx.onProgress,
+          signal: ctx.signal,
+        })
         return { blob, filename: outputName(file.name, 'rotated', 'pdf'), originalSize: file.size }
       }}
       renderResult={(r) => (
-        <SingleResult blob={r.blob} filename={r.filename} originalSize={r.originalSize} kind="pdf" />
+        <SingleResult
+          blob={r.blob}
+          filename={r.filename}
+          originalSize={r.originalSize}
+          kind="pdf"
+        />
       )}
     />
   )

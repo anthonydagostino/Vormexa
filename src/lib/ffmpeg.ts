@@ -54,10 +54,12 @@ export async function loadFFmpeg(onProgress?: LoadProgress): Promise<FFmpeg> {
       bump()
       return u
     })
-    const wasmURL = await toBlobURL(`${CORE_BASE}/${coreName}.wasm`, 'application/wasm').then((u) => {
-      bump()
-      return u
-    })
+    const wasmURL = await toBlobURL(`${CORE_BASE}/${coreName}.wasm`, 'application/wasm').then(
+      (u) => {
+        bump()
+        return u
+      },
+    )
 
     const config: Record<string, string> = { coreURL, wasmURL }
     if (mt) {

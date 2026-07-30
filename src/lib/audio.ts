@@ -143,7 +143,10 @@ export async function mergeAudio(files: File[], opt: MergeAudioOptions = {}): Pr
   ]
 
   const inputData = await Promise.all(
-    inputs.map(async (inp) => ({ name: inp.name, data: new Uint8Array(await inp.file.arrayBuffer()) })),
+    inputs.map(async (inp) => ({
+      name: inp.name,
+      data: new Uint8Array(await inp.file.arrayBuffer()),
+    })),
   )
   const { outputs } = await runFFmpeg({
     inputs: inputData,

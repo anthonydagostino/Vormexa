@@ -15,8 +15,8 @@ export function SiteFooter() {
               <span className="text-xl font-extrabold tracking-tight text-white">Vormexa</span>
             </Link>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-slate-400">
-              The all-in-one media toolkit. Compress, convert, resize and merge video, photos,
-              audio and PDFs — entirely on your device.
+              The all-in-one media toolkit. Compress, convert, resize and merge video, photos, audio
+              and PDFs — entirely on your device.
             </p>
             <p className="mt-4 inline-flex items-center gap-1.5 text-xs text-emerald-400">
               <ShieldCheck className="h-3.5 w-3.5" /> Nothing is ever uploaded
@@ -40,9 +40,7 @@ export function SiteFooter() {
         </div>
 
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/5 pt-6 sm:flex-row">
-          <p className="text-xs text-slate-500">
-            © {'2026'} Vormexa. All rights reserved.
-          </p>
+          <p className="text-xs text-slate-500">© {'2026'} Vormexa. All rights reserved.</p>
           <div className="flex items-center gap-5 text-xs text-slate-500">
             <Link to="/pricing" className="hover:text-slate-300">
               Pricing

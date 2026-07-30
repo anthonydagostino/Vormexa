@@ -66,7 +66,12 @@ export function VideoCompress() {
               </Select>
             </Field>
             <Field label="Max height" hint="Optional cap.">
-              <NumberInput value={maxHeight} onChange={setMaxHeight} suffix="px" placeholder="e.g. 720" />
+              <NumberInput
+                value={maxHeight}
+                onChange={setMaxHeight}
+                suffix="px"
+                placeholder="e.g. 720"
+              />
             </Field>
           </div>
         </div>
@@ -106,7 +111,10 @@ export function VideoConvert() {
       controls={() => (
         <div className="flex flex-col gap-5">
           <Field label="Convert to">
-            <Select value={container} onChange={(e) => setContainer(e.target.value as VideoContainer)}>
+            <Select
+              value={container}
+              onChange={(e) => setContainer(e.target.value as VideoContainer)}
+            >
               {VIDEO_CONTAINERS.map((c) => (
                 <option key={c.value} value={c.value}>
                   {c.label}
@@ -271,7 +279,13 @@ function TrimVideoInner() {
       actionLabel="Trim video"
       validate={() => (range && range.end <= range.start ? 'End must be after start.' : null)}
       controls={(files) => (
-        <TrimVideoFields file={files[0]} range={range} setRange={setRange} reEncode={reEncode} setReEncode={setReEncode} />
+        <TrimVideoFields
+          file={files[0]}
+          range={range}
+          setRange={setRange}
+          reEncode={reEncode}
+          setReEncode={setReEncode}
+        />
       )}
       action={async (files, ctx) => {
         const file = files[0]
@@ -285,7 +299,12 @@ function TrimVideoInner() {
           onProgress: ctx.onProgress,
           signal: ctx.signal,
         })
-        return { blob, filename: outputName(file.name, 'trimmed', 'mp4'), kind: 'video', originalSize: file.size }
+        return {
+          blob,
+          filename: outputName(file.name, 'trimmed', 'mp4'),
+          kind: 'video',
+          originalSize: file.size,
+        }
       }}
       renderResult={renderVideo}
     />
@@ -408,7 +427,13 @@ export function VideoToGif() {
             <Slider min={5} max={24} value={fps} onChange={(v) => setFps(Math.round(v))} />
           </Field>
           <Field label={`Width · ${width}px`} hint="Height scales automatically.">
-            <Slider min={160} max={800} step={20} value={width} onChange={(v) => setWidth(Math.round(v))} />
+            <Slider
+              min={160}
+              max={800}
+              step={20}
+              value={width}
+              onChange={(v) => setWidth(Math.round(v))}
+            />
           </Field>
         </div>
       )}
@@ -422,7 +447,12 @@ export function VideoToGif() {
           onProgress: ctx.onProgress,
           signal: ctx.signal,
         })
-        return { blob, filename: outputName(file.name, '', 'gif'), kind: 'image', originalSize: file.size }
+        return {
+          blob,
+          filename: outputName(file.name, '', 'gif'),
+          kind: 'image',
+          originalSize: file.size,
+        }
       }}
       renderResult={renderVideo}
     />

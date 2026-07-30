@@ -4,8 +4,11 @@ import * as pdfjsLib from 'pdfjs-dist'
 import PdfWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url'
 import type { RunProgress } from './ffmpeg'
 import { processImage, type ImageFormat } from './image'
+import { parsePageRanges } from './pdf-ranges'
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = PdfWorker
+
+export { parsePageRanges }
 
 /** PDF operations via pdf-lib (writing) + pdf.js (rendering). On-device only. */
 
@@ -32,24 +35,6 @@ export async function mergePdfs(files: File[], job: PdfJob = {}): Promise<Blob> 
   }
   const bytes = await out.save()
   return new Blob([toBuffer(bytes)], { type: 'application/pdf' })
-}
-
-/** Parse a page-range string like "1-3, 5, 8-10" into zero-based indices. */
-export function parsePageRanges(input: string, pageCount: number): number[] {
-  const result = new Set<number>()
-  for (const part of input.split(',')) {
-    const token = part.trim()
-    if (!token) continue
-    const range = token.split('-').map((s) => parseInt(s.trim(), 10))
-    if (range.length === 1 && Number.isFinite(range[0])) {
-      const p = range[0]
-      if (p >= 1 && p <= pageCount) result.add(p - 1)
-    } else if (range.length === 2 && Number.isFinite(range[0]) && Number.isFinite(range[1])) {
-      const [a, b] = [Math.min(...range), Math.max(...range)]
-      for (let p = a; p <= b; p++) if (p >= 1 && p <= pageCount) result.add(p - 1)
-    }
-  }
-  return [...result].sort((x, y) => x - y)
 }
 
 export async function getPdfPageCount(file: File): Promise<number> {
@@ -239,7 +224,11 @@ export async function compressPdf(file: File, opt: CompressPdfOptions = {}): Pro
     await page.render({ canvasContext: ctx, viewport }).promise
 
     const jpegBlob = await new Promise<Blob>((resolve, reject) =>
-      canvas.toBlob((b) => (b ? resolve(b) : reject(new Error('encode failed'))), 'image/jpeg', quality),
+      canvas.toBlob(
+        (b) => (b ? resolve(b) : reject(new Error('encode failed'))),
+        'image/jpeg',
+        quality,
+      ),
     )
     const embedded = await out.embedJpg(new Uint8Array(await jpegBlob.arrayBuffer()))
     const p = out.addPage([viewport.width, viewport.height])

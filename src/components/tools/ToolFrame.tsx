@@ -10,6 +10,7 @@ import type { ToolMeta } from '@/tools/types'
 import { formatPercent } from '@/lib/format'
 import { usePro } from '@/hooks/usePro'
 import { UpgradeGate } from '@/components/pro/UpgradeGate'
+import { isBatchGated } from '@/lib/gate'
 
 interface ToolFrameProps<TResult> {
   meta: ToolMeta
@@ -82,8 +83,7 @@ export function ToolFrame<TResult>({
     return validate?.(files) ?? null
   }, [files, minFiles, validate])
 
-  const overFreeLimit =
-    proAboveCount != null && files.length > proAboveCount && !isPro
+  const overFreeLimit = isBatchGated(files.length, proAboveCount, isPro)
   const canRun = files.length >= minFiles && !validationError && !overFreeLimit && !busy
 
   const handleRun = () => {
@@ -133,9 +133,7 @@ export function ToolFrame<TResult>({
           </div>
         )}
 
-        {files.length >= minFiles && controls && (
-          <div className="card p-5">{controls(files)}</div>
-        )}
+        {files.length >= minFiles && controls && <div className="card p-5">{controls(files)}</div>}
 
         {validationError && (
           <div className="flex items-center gap-2 rounded-xl border border-amber-500/25 bg-amber-500/10 px-4 py-3 text-sm text-amber-200">
@@ -253,7 +251,6 @@ function useThumbnails(files: File[]): Record<number, string> {
     })
     setThumbs(map)
     return () => urls.forEach((u) => URL.revokeObjectURL(u))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [files])
   return thumbs
 }

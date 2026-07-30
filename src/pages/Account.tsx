@@ -14,15 +14,16 @@ export function Account() {
         ← All tools
       </Link>
       <h1 className="text-2xl font-bold text-white">Account & license</h1>
-      <p className="mt-1 text-sm text-slate-400">
-        Manage your Vormexa Pro license on this device.
-      </p>
+      <p className="mt-1 text-sm text-slate-400">Manage your Vormexa Pro license on this device.</p>
 
       <div className="mt-6">{valid ? <ProPanel /> : <FreePanel />}</div>
 
       {valid && (
         <div className="mt-4 space-y-1 rounded-2xl border border-white/5 bg-ink-900/50 p-5 text-sm text-slate-400">
-          <Row label="Status" value={<span className="capitalize text-emerald-300">{status ?? 'active'}</span>} />
+          <Row
+            label="Status"
+            value={<span className="capitalize text-emerald-300">{status ?? 'active'}</span>}
+          />
           <Row label="License key" value={<code className="text-slate-300">{maskKey(key)}</code>} />
           {activatedAt && (
             <Row label="Activated" value={new Date(activatedAt).toLocaleDateString()} />
@@ -94,8 +95,8 @@ function FreePanel() {
         </div>
         <h2 className="mt-3 text-xl font-bold text-white">Unlock Vormexa Pro</h2>
         <p className="mt-1.5 text-sm text-slate-300">
-          Batch & bulk processing, native desktop apps, advanced presets and priority support —
-          from ${PRO_PRICE.yearly / 12}/mo.
+          Batch & bulk processing, native desktop apps, advanced presets and priority support — from
+          ${PRO_PRICE.yearly / 12}/mo.
         </p>
         {paymentsConfigured ? (
           <a href={buy} target="_blank" rel="noopener noreferrer" className="mt-4 inline-block">

@@ -176,7 +176,9 @@ export async function trimVideo(file: File, opt: TrimOptions): Promise<Blob> {
     onProgress: opt.onProgress,
     signal: opt.signal,
   })
-  return new Blob([toBufferSource(outputs[0].data)], { type: mimeForContainer(ext as VideoContainer) })
+  return new Blob([toBufferSource(outputs[0].data)], {
+    type: mimeForContainer(ext as VideoContainer),
+  })
 }
 
 export interface MergeOptions extends Job {
@@ -226,7 +228,10 @@ export async function mergeVideos(files: File[], opt: MergeOptions = {}): Promis
   ]
 
   const inputData = await Promise.all(
-    inputs.map(async (inp) => ({ name: inp.name, data: new Uint8Array(await inp.file.arrayBuffer()) })),
+    inputs.map(async (inp) => ({
+      name: inp.name,
+      data: new Uint8Array(await inp.file.arrayBuffer()),
+    })),
   )
 
   const { outputs } = await runFFmpeg({

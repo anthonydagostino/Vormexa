@@ -90,7 +90,13 @@ export function AudioCompress() {
       controls={() => (
         <div className="flex flex-col gap-5">
           <Field label={`Bitrate · ${bitrate} kbps`} hint="Lower bitrate = smaller file.">
-            <Slider min={64} max={320} step={16} value={bitrate} onChange={(v) => setBitrate(Math.round(v))} />
+            <Slider
+              min={64}
+              max={320}
+              step={16}
+              value={bitrate}
+              onChange={(v) => setBitrate(Math.round(v))}
+            />
           </Field>
           <Field label="Format">
             <Segmented
@@ -115,7 +121,11 @@ export function AudioCompress() {
           onProgress: ctx.onProgress,
           signal: ctx.signal,
         })
-        return { blob, filename: outputName(file.name, 'compressed', format), originalSize: file.size }
+        return {
+          blob,
+          filename: outputName(file.name, 'compressed', format),
+          originalSize: file.size,
+        }
       }}
       renderResult={renderAudio}
     />
@@ -133,7 +143,13 @@ export function AudioTrim() {
       actionLabel="Trim audio"
       validate={() => (range && range.end <= range.start ? 'End must be after start.' : null)}
       controls={(files) => (
-        <TrimAudioFields file={files[0]} range={range} setRange={setRange} format={format} setFormat={setFormat} />
+        <TrimAudioFields
+          file={files[0]}
+          range={range}
+          setRange={setRange}
+          format={format}
+          setFormat={setFormat}
+        />
       )}
       action={async (files, ctx) => {
         const file = files[0]

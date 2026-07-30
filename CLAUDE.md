@@ -13,8 +13,22 @@ proposition is privacy/offline.
 
 - `pnpm dev` — dev server
 - `pnpm build` — `tsc -b && vite build` (must pass before committing)
-- `pnpm lint` — type-check only
+- `pnpm typecheck` — `tsc -b` only
+- `pnpm lint` — ESLint (flat config, `--max-warnings 0`)
+- `pnpm format` / `pnpm format:check` — Prettier
+- `pnpm test` — Vitest unit + integration tests (jsdom)
+- `pnpm test:e2e` — Playwright end-to-end (run `pnpm exec playwright install chromium` once)
+- `pnpm check` — typecheck + lint + test + build (run before pushing)
 - `pnpm preview` — serve the production build with COOP/COEP headers
+
+## Testing
+
+- Unit/integration tests live next to their subject as `*.test.ts(x)` and run in
+  jsdom. Keep pure logic in dependency-free modules (e.g. `lib/gate.ts`,
+  `lib/pdf-ranges.ts`) so it's testable without loading ffmpeg/pdf.js.
+- Canvas/ffmpeg/pdf pipelines that can't run in jsdom are covered by Playwright
+  (`e2e/`), which drives the real production build in a headless browser.
+- `src/test/setup.ts` wires jest-dom matchers and polyfills `Blob.arrayBuffer`.
 
 ## Architecture
 

@@ -2,12 +2,7 @@ import { useCallback, useRef, useState } from 'react'
 import { loadFFmpeg } from '@/lib/ffmpeg'
 
 export type ProcessorStatus =
-  | 'idle'
-  | 'loading-engine'
-  | 'processing'
-  | 'done'
-  | 'error'
-  | 'cancelled'
+  'idle' | 'loading-engine' | 'processing' | 'done' | 'error' | 'cancelled'
 
 export interface JobContext {
   signal: AbortSignal

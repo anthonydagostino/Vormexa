@@ -80,6 +80,28 @@ pnpm preview
 
 > **Node 18+ and pnpm** are recommended. `npm install` / `npm run build` also work.
 
+## 🧪 Testing & quality
+
+```bash
+pnpm typecheck     # tsc project references
+pnpm lint          # ESLint (flat config, zero warnings allowed)
+pnpm format        # Prettier write  (format:check to verify)
+pnpm test          # Vitest unit + integration tests (jsdom)
+pnpm test:e2e      # Playwright end-to-end (real build in a headless browser)
+pnpm check         # typecheck + lint + test + build, all in one
+```
+
+- **Unit + integration** (Vitest): pure engine logic (formatting, page-range
+  parsing, resize math, the zip builder, license API, paywall gating), the
+  Zustand license store, tool-registry integrity, and component rendering. Pure
+  logic is isolated in dependency-free modules so it tests without loading
+  ffmpeg/pdf.js.
+- **End-to-end** (Playwright, `e2e/`): drives the real production build in a
+  browser — the marketing site, tool routing, the on-device image pipeline, and
+  the Pro paywall (free user gated → licensed user unlocked).
+- **CI** (`.github/workflows/ci.yml`) runs typecheck, lint, format-check, unit
+  tests and build on every push/PR, plus the e2e suite.
+
 ### Cross-origin isolation
 
 `ffmpeg.wasm`'s multi-threaded core needs the page to be
@@ -96,6 +118,8 @@ The output in `dist/` is fully static. Any host works, as long as it:
 
 1. Serves `index.html` for unknown routes (SPA fallback), and
 2. Sends the COOP/COEP headers above.
+
+**→ See [DEPLOYMENT.md](./DEPLOYMENT.md) for a full step-by-step guide.**
 
 Ready-made configs are included:
 
