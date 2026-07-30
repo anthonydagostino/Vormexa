@@ -16,6 +16,9 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
+    "tauri": "tauri",
+    "desktop:dev": "tauri dev",
+    "desktop:build": "tauri build",
     "check": "pnpm typecheck && pnpm lint && pnpm test && pnpm build",
     "setup:ffmpeg": "node scripts/copy-ffmpeg-core.mjs",
     "postinstall": "node scripts/copy-ffmpeg-core.mjs"
@@ -39,6 +42,8 @@
     "@ffmpeg/core": "^0.12.6",
     "@ffmpeg/core-mt": "^0.12.6",
     "@playwright/test": "^1.62.1",
+    "@tauri-apps/api": "^2.11.1",
+    "@tauri-apps/cli": "^2.11.4",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
