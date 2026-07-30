@@ -1,0 +1,43 @@
+# dependencies
+node_modules
+.pnp
+.pnp.js
+
+# build output
+dist
+dist-ssr
+*.local
+
+# ffmpeg.wasm core binaries — regenerated from node_modules by `postinstall`
+# (see scripts/copy-ffmpeg-core.mjs). Kept out of git; they're ~65 MB.
+public/ffmpeg/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+logs
+*.log
+
+# editor / os
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# env
+.env
+.env.local
+.env.*.local
+
+# misc
+.cache
+.temp
+coverage
+*.tsbuildinfo
