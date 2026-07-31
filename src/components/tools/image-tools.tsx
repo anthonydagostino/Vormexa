@@ -78,8 +78,17 @@ export function ImageCompress() {
               <Slider min={0.3} max={0.95} step={0.01} value={quality} onChange={setQuality} />
             </Field>
           ) : (
-            <Field label="Target size" hint="We search for the highest quality under this size.">
-              <NumberInput value={targetKb} onChange={setTargetKb} suffix="KB" min={10} />
+            <Field
+              label="Target size (KB)"
+              hint="Max size in kilobytes — e.g. 300 for a web photo, 1000 for “under 1 MB”. We find the best quality that fits under it."
+            >
+              <NumberInput
+                value={targetKb}
+                onChange={setTargetKb}
+                suffix="KB"
+                min={10}
+                placeholder="e.g. 300"
+              />
             </Field>
           )}
           <Field label="Max width (optional)" hint="Downscale wide images to save more.">

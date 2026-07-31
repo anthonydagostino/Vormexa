@@ -1,8 +1,11 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { Analytics } from '@vercel/analytics/react'
 import { MarketingLayout } from '@/components/layout/MarketingLayout'
 import { AppLayout } from '@/components/layout/AppLayout'
 import { Home } from '@/pages/Home'
 import { Pricing } from '@/pages/Pricing'
+import { Privacy } from '@/pages/Privacy'
+import { Terms } from '@/pages/Terms'
 import { Workspace } from '@/pages/Workspace'
 import { ToolPage } from '@/pages/ToolPage'
 import { Account } from '@/pages/Account'
@@ -17,6 +20,8 @@ export default function App() {
         <Route element={<MarketingLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/pricing" element={<Pricing />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/terms" element={<Terms />} />
         </Route>
         <Route path="/app" element={<AppLayout />}>
           <Route index element={<Workspace />} />
@@ -28,6 +33,8 @@ export default function App() {
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
+      {/* First-party, cookieless traffic analytics (enable in the Vercel dashboard). */}
+      <Analytics />
     </BrowserRouter>
   )
 }
