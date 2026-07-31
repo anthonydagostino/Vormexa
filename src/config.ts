@@ -8,11 +8,13 @@
  * see .env.example.
  */
 
+/** Web Pro is a monthly subscription; the native apps are a one-time purchase. */
 export const PRO_PRICE = {
-  monthly: 6,
-  yearly: 48, // ~$4/mo billed annually
-  lifetime: 79,
+  monthly: 4.99,
 }
+
+/** One-time price for the native desktop / mobile apps (owned forever, offline). */
+export const DESKTOP_PRICE = 14.99
 
 export const lemon = {
   /** Hosted checkout URL for the Pro plan (Lemon Squeezy "Share / buy" link). */

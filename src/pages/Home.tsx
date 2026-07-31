@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import {
   ArrowRight,
   Check,
@@ -16,8 +16,11 @@ import {
 import { Button } from '@/components/ui/primitives'
 import { ALL_TOOLS, CATEGORIES, toolsByCategory } from '@/tools/registry-meta'
 import { toolPath } from '@/tools/types'
+import { isTauri } from '@/lib/platform'
 
 export function Home() {
+  // The desktop app opens straight into the tools, not the marketing page.
+  if (isTauri()) return <Navigate to="/app" replace />
   return (
     <>
       <Hero />

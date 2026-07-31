@@ -95,8 +95,8 @@ function FreePanel() {
         </div>
         <h2 className="mt-3 text-xl font-bold text-white">Unlock Vormexa Pro</h2>
         <p className="mt-1.5 text-sm text-slate-300">
-          Batch & bulk processing, native desktop apps, advanced presets and priority support — from
-          ${PRO_PRICE.yearly / 12}/mo.
+          Unlimited batch & bulk processing, advanced presets and priority support — just $
+          {PRO_PRICE.monthly}/mo.
         </p>
         {paymentsConfigured ? (
           <a href={buy} target="_blank" rel="noopener noreferrer" className="mt-4 inline-block">
