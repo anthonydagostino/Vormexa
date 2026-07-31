@@ -8,13 +8,8 @@
  * see .env.example.
  */
 
-/** Web Pro is a monthly subscription; the native apps are a one-time purchase. */
-export const PRO_PRICE = {
-  monthly: 4.99,
-}
-
-/** One-time price for the native desktop / mobile apps (owned forever, offline). */
-export const DESKTOP_PRICE = 14.99
+/** One-time price (USD) to unlock Vormexa Pro forever — all platforms, owned. */
+export const PRO_PRICE = 4.99
 
 export const lemon = {
   /**

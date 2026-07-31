@@ -24,7 +24,7 @@ export function UpgradeGate({ title, benefit }: { title: string; benefit: string
       <div className="mt-5 flex flex-col gap-3 sm:flex-row">
         {external ? (
           <a href={buy} target="_blank" rel="noopener noreferrer" className="sm:flex-1">
-            <Button className="w-full">Upgrade to Pro — ${PRO_PRICE.monthly}/mo</Button>
+            <Button className="w-full">Unlock Pro — ${PRO_PRICE} one-time</Button>
           </a>
         ) : (
           <Link to={buy} className="sm:flex-1">
