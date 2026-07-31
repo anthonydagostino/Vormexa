@@ -250,7 +250,7 @@ export function NumberInput({
     <div className={cn('relative', className)}>
       <input
         type="number"
-        className="input"
+        className={cn('input', suffix && 'pr-14')}
         value={value}
         min={min}
         max={max}
@@ -258,7 +258,7 @@ export function NumberInput({
         onChange={(e) => onChange(e.target.value === '' ? '' : Number(e.target.value))}
       />
       {suffix && (
-        <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-500">
+        <span className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 rounded-md bg-ink-700 px-1.5 py-0.5 text-xs font-semibold text-slate-300">
           {suffix}
         </span>
       )}

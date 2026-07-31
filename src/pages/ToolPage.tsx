@@ -11,9 +11,16 @@ export function ToolPage() {
   const key = toolKey(category, slug)
 
   useEffect(() => {
-    if (meta) document.title = `${meta.title} · Vormexa`
+    const defaultTitle = 'Vormexa — Video, Photo, Audio & PDF Tools · 100% Offline'
+    const defaultDesc =
+      'Vormexa is an all-in-one media toolkit. Compress, convert, resize & merge video, photos, audio and PDFs — 100% on your device.'
+    if (meta) {
+      document.title = `${meta.title} · Vormexa`
+      setMetaDescription(`${meta.description} Free & 100% on-device — nothing is uploaded.`)
+    }
     return () => {
-      document.title = 'Vormexa — Video, Photo, Audio & PDF Tools · 100% Offline'
+      document.title = defaultTitle
+      setMetaDescription(defaultDesc)
     }
   }, [meta])
 
@@ -30,4 +37,15 @@ export function ToolPage() {
       <Component />
     </Suspense>
   )
+}
+
+/** Update the <meta name="description"> tag for SEO on tool routes. */
+function setMetaDescription(content: string) {
+  let tag = document.querySelector('meta[name="description"]')
+  if (!tag) {
+    tag = document.createElement('meta')
+    tag.setAttribute('name', 'description')
+    document.head.appendChild(tag)
+  }
+  tag.setAttribute('content', content)
 }

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Github, ShieldCheck } from 'lucide-react'
+import { ShieldCheck } from 'lucide-react'
 import { Logo } from './Logo'
 import { CATEGORIES, toolsByCategory } from '@/tools/registry-meta'
 import { toolPath } from '@/tools/types'
@@ -45,15 +45,12 @@ export function SiteFooter() {
             <Link to="/pricing" className="hover:text-slate-300">
               Pricing
             </Link>
-            <a href="#" className="hover:text-slate-300">
+            <Link to="/terms" className="hover:text-slate-300">
               Terms
-            </a>
-            <a href="#" className="hover:text-slate-300">
+            </Link>
+            <Link to="/privacy" className="hover:text-slate-300">
               Privacy
-            </a>
-            <a href="#" className="inline-flex items-center gap-1 hover:text-slate-300">
-              <Github className="h-3.5 w-3.5" /> Source
-            </a>
+            </Link>
           </div>
         </div>
       </div>
