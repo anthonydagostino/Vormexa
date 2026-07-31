@@ -11,9 +11,11 @@ import { ToolPage } from '@/pages/ToolPage'
 import { Account } from '@/pages/Account'
 import { NotFound } from '@/pages/NotFound'
 import { useLicenseRefresh } from '@/hooks/usePro'
+import { useDesktopLinks } from '@/hooks/useDesktopLinks'
 
 export default function App() {
   useLicenseRefresh()
+  useDesktopLinks()
   return (
     <BrowserRouter>
       <Routes>

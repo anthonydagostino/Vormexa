@@ -89,16 +89,54 @@ Unsigned apps trigger a security warning on first launch:
 
 ---
 
-## How you sell it (this is your paid product)
+## Selling the desktop app
 
-The desktop app is the natural **Pro** offering — the model that earned the
-previous owner most of the revenue. Two routes:
+The desktop app is the natural paid product — the model that earned the previous
+owner most of the revenue. External links (checkout, support email) open in the
+user's real browser via the bundled opener plugin, so the in-app "Get Pro" and
+license activation both work from the native window.
 
-1. **Direct download + license** (simplest): host the `.dmg`/`.exe` on your site,
-   gate downloads behind a Lemon Squeezy purchase, and reuse the same license-key
-   activation the web app already has (`src/store/license.ts`).
-2. **App stores:** Mac App Store / Microsoft Store. More setup (extra signing,
-   sandbox entitlements) but gives you built-in discovery and store checkout.
+There are two distribution routes. **Start with Direct Sale** — it's faster,
+keeps 100% of the revenue (no store cut), and reuses the license system you
+already have.
+
+### Route A — Direct sale via Lemon Squeezy (recommended)
+
+1. **Build the installers** (see above): a `.dmg` on your Mac, and `.exe`/`.msi`
+   via the GitHub Action (`git tag v1.0.0 && git push origin v1.0.0`).
+2. In Lemon Squeezy, create a **new product** — e.g. "Vormexa Desktop":
+   - **Single payment** (your one-time price).
+   - **Upload the installer files** as the product's deliverables (buyers download
+     them after paying). Add both the Mac and Windows builds.
+   - Turn on **License keys** (activation limit ~5).
+3. Add a **Download** button on `getvormexa.com` that points to the product's
+   checkout. After purchase, Lemon Squeezy delivers the installer + a license key.
+4. The buyer installs the app and activates it with their key on the in-app
+   **Account** screen — the exact same flow the web app already uses.
+
+That's the whole pipeline, and it reuses everything that's built.
+
+### Route B — App stores (optional, more work)
+
+Gives you built-in discovery and store checkout, but adds significant process:
+
+- **Mac App Store:** requires the Apple Developer Program ($99/yr), an App Store
+  distribution certificate, **app sandbox entitlements**, and review via App Store
+  Connect (screenshots, description, privacy questionnaire). Note Apple takes
+  15–30%.
+- **Microsoft Store:** register in Partner Center (~$19 one-time), package as MSIX,
+  and submit for certification.
+
+Do this later, once Direct Sale is working — it's a bigger lift for incremental
+discovery.
+
+### What you need (and what only you can do)
+
+- A **Mac** (you have one) + **Xcode Command Line Tools** — to build/sign the Mac app.
+- An **Apple Developer ID** ($99/yr) — to code-sign & notarize so macOS doesn't
+  warn users on first launch. Set the signing env vars and Tauri handles the rest
+  (see the signing docs linked above).
+- A **Lemon Squeezy** product with the installers attached (Route A).
 
 ---
 
