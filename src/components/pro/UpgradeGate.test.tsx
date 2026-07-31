@@ -22,8 +22,9 @@ describe('<UpgradeGate />', () => {
 
   it('offers both a purchase path and a license-activation path', () => {
     renderGate()
-    // Without checkout configured, the buy CTA falls back to the pricing page.
-    expect(screen.getByRole('link', { name: /Pro plans/i })).toHaveAttribute('href', '/pricing')
+    // With checkout configured, the buy CTA points at the hosted checkout.
+    const buy = screen.getByRole('link', { name: /Upgrade to Pro/i })
+    expect(buy.getAttribute('href')).toContain('lemonsqueezy.com')
     expect(screen.getByRole('link', { name: /license key/i })).toHaveAttribute(
       'href',
       '/app/account',
