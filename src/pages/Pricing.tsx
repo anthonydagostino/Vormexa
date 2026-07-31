@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom'
-import { Check, Monitor, Sparkles } from 'lucide-react'
+import { Check, Sparkles } from 'lucide-react'
 import { Button } from '@/components/ui/primitives'
-import { CONTACT_EMAIL, DESKTOP_PRICE, lemon, paymentsConfigured, PRO_PRICE } from '@/config'
+import { lemon, paymentsConfigured, PRO_PRICE } from '@/config'
 
-type TierKind = 'free' | 'pro' | 'desktop'
+type TierKind = 'free' | 'pro'
 
 interface Tier {
   name: string
@@ -37,36 +37,20 @@ const TIERS: Tier[] = [
   {
     name: 'Pro',
     kind: 'pro',
-    tagline: 'For creators who live in their media.',
-    price: PRO_PRICE.monthly.toFixed(2),
-    unit: '/ mo',
-    note: 'Billed monthly · cancel anytime',
+    tagline: 'Pay once. Yours forever.',
+    price: PRO_PRICE.toFixed(2),
+    unit: 'one-time',
+    note: 'One payment · no subscription',
     cta: 'Get Pro',
     highlight: true,
     features: [
       'Everything in Free',
       'Unlimited files per job',
       'Batch processing — whole folders at once',
+      'Native Mac & Windows apps (coming soon)',
       'Multi-thread engine for max speed',
       'Advanced export presets',
       'Priority email support',
-    ],
-  },
-  {
-    name: 'Desktop',
-    kind: 'desktop',
-    tagline: 'Own it forever. No subscription.',
-    price: DESKTOP_PRICE.toFixed(2),
-    unit: 'one-time',
-    note: 'Mac & Windows · mobile coming soon',
-    cta: 'Get notified',
-    features: [
-      'Everything in Pro',
-      'Native Mac & Windows apps',
-      'One payment — yours to keep',
-      'Works 100% offline, forever',
-      'Full-speed native engine',
-      'Free updates',
     ],
   },
 ]
@@ -79,15 +63,15 @@ export function Pricing() {
           <Sparkles className="h-4 w-4" /> Simple, honest pricing
         </p>
         <h1 className="text-4xl font-black tracking-tight text-white sm:text-5xl">
-          Start free. Go Pro when you need more.
+          Free to use. $4.99 to own it all.
         </h1>
         <p className="mt-4 text-lg text-slate-400">
-          The full browser toolkit is free forever. Go Pro for unlimited batch power on the web, or
-          buy the desktop app once and own it for good.
+          The full browser toolkit is free forever. Unlock unlimited batch power with a single
+          one-time payment — no subscription, no recurring charges, ever.
         </p>
       </div>
 
-      <div className="mt-14 grid gap-6 lg:grid-cols-3">
+      <div className="mx-auto mt-14 grid max-w-3xl gap-6 sm:grid-cols-2">
         {TIERS.map((tier) => (
           <div
             key={tier.name}
@@ -97,13 +81,10 @@ export function Pricing() {
           >
             {tier.highlight && (
               <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-brand-gradient px-3 py-1 text-xs font-semibold text-white">
-                Most popular
+                Best value
               </span>
             )}
-            <h3 className="flex items-center gap-2 text-xl font-bold text-white">
-              {tier.kind === 'desktop' && <Monitor className="h-5 w-5 text-accent-400" />}
-              {tier.name}
-            </h3>
+            <h3 className="text-xl font-bold text-white">{tier.name}</h3>
             <p className="mt-1 text-sm text-slate-400">{tier.tagline}</p>
 
             <div className="mt-5 flex items-end gap-1.5">
@@ -144,17 +125,6 @@ function TierCta({ tier }: { tier: Tier }) {
     )
   }
 
-  // Desktop apps aren't released yet — capture interest instead of a dead link.
-  if (tier.kind === 'desktop') {
-    return (
-      <a href={`mailto:${CONTACT_EMAIL}?subject=Vormexa%20Desktop%20app`} className={className}>
-        <Button variant="secondary" className="w-full">
-          {tier.cta}
-        </Button>
-      </a>
-    )
-  }
-
   // Pro → hosted checkout when configured, otherwise the in-app activation page.
   if (paymentsConfigured) {
     return (
@@ -180,20 +150,20 @@ const FAQS = [
     a: 'Yes. Every tool in the browser app is free with no watermarks, no sign-up and no file-size limits beyond your device memory. Free handles up to 3 files per job; Pro unlocks unlimited batch.',
   },
   {
+    q: 'Is Pro a subscription?',
+    a: 'No — Pro is a one-time $4.99 purchase. Pay once and it is yours forever, including future updates and the native desktop apps when they launch. No recurring charges.',
+  },
+  {
     q: 'Are my files uploaded anywhere?',
     a: 'Never. All processing happens locally in your browser (or the desktop app) using WebAssembly. Your files are physically incapable of leaving your device — you can confirm it in your network tab.',
   },
   {
-    q: "What's the difference between Pro and the Desktop app?",
-    a: 'Pro is a $4.99/month subscription that unlocks unlimited batch processing in your web browser. The Desktop app is a one-time $14.99 purchase you own forever — native Mac & Windows apps that run fully offline with a faster native engine. Buy whichever fits how you work.',
-  },
-  {
     q: 'Do I need an internet connection?',
-    a: 'The free tools and the one-time desktop app work fully offline. The web Pro subscription needs to reach the internet occasionally to confirm your subscription is active — but it never sends your files, only checks your license.',
+    a: 'Only to load the app the first time and to activate your Pro license once. After that everything — including Pro — works fully offline, forever. Your files never leave your device.',
   },
   {
-    q: 'Can I cancel anytime?',
-    a: 'Yes. The Pro subscription can be cancelled at any time from your receipt, and the one-time desktop purchase is yours to keep with no recurring charge.',
+    q: 'How do I unlock Pro after buying?',
+    a: "You'll get a license key by email. Paste it into the app once (Account → Activate) and Pro stays unlocked on that device — no account needed.",
   },
 ]
 
