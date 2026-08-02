@@ -1,11 +1,18 @@
 # Netlify / Cloudflare Pages headers.
 # Cross-origin isolation is required for ffmpeg.wasm's multithreaded core.
+# The CSP is the primary hardening: connect-src is an allowlist, so even if
+# markup were ever injected it could not exfiltrate a user's files anywhere.
+# 'wasm-unsafe-eval' + blob: are required by ffmpeg.wasm / the pdf.js worker.
 /*
+  Content-Security-Policy: default-src 'self'; base-uri 'none'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self' 'wasm-unsafe-eval' blob:; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self' data:; connect-src 'self' blob: data: https://api.lemonsqueezy.com; manifest-src 'self'; upgrade-insecure-requests
   Cross-Origin-Opener-Policy: same-origin
   Cross-Origin-Embedder-Policy: require-corp
   Cross-Origin-Resource-Policy: same-origin
   X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
   Referrer-Policy: strict-origin-when-cross-origin
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), usb=(), payment=(), interest-cohort=()
 
 /sw.js
   Cache-Control: no-cache

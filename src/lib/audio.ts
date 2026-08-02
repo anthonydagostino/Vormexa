@@ -17,7 +17,8 @@ export const AUDIO_FORMATS: { value: AudioFormat; label: string }[] = [
   { value: 'flac', label: 'FLAC (lossless)' },
 ]
 
-function encoderArgs(format: AudioFormat, bitrateKbps?: number): string[] {
+/** Build the ffmpeg encoder args for an audio format. Exported for testing. */
+export function encoderArgs(format: AudioFormat, bitrateKbps?: number): string[] {
   switch (format) {
     case 'mp3':
       return ['-c:a', 'libmp3lame', '-b:a', `${bitrateKbps ?? 192}k`]

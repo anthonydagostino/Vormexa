@@ -53,6 +53,29 @@ describe('license API client', () => {
     expect(res.error).toMatch(/not found/)
   })
 
+  it('throws a clean error when the server errors with no error body', async () => {
+    // e.g. a 500 with an empty/garbage body → surface a generic message.
+    mockFetch({}, false)
+    await expect(activateLicense('K', 'n')).rejects.toThrow(/License server error \(400\)/)
+  })
+
+  it('propagates a network failure (fetch rejects)', async () => {
+    vi.spyOn(globalThis, 'fetch').mockRejectedValue(new TypeError('Failed to fetch'))
+    await expect(validateLicense('K', 'i')).rejects.toThrow(/Failed to fetch/)
+  })
+
+  it('tolerates a non-JSON response body on a successful status', async () => {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: async () => {
+        throw new SyntaxError('Unexpected token')
+      },
+    } as unknown as Response)
+    // Should resolve to an empty object rather than throwing.
+    await expect(deactivateLicense('K', 'i')).resolves.toEqual({})
+  })
+
   it('validates and deactivates using the instance id', async () => {
     const valSpy = mockFetch({
       valid: true,

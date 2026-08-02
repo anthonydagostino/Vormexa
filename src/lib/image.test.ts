@@ -31,4 +31,26 @@ describe('computeSize', () => {
     const r = computeSize(100, 100, { width: 500, mode: 'fit', noUpscale: true })
     expect([r.w, r.h]).toEqual([100, 100])
   })
+
+  it('derives the missing width from a height-only request', () => {
+    const r = computeSize(1000, 500, { height: 250, mode: 'fit' })
+    expect([r.w, r.h]).toEqual([500, 250])
+  })
+
+  it('cover crops horizontally for a portrait target box', () => {
+    const r = computeSize(1000, 1000, { width: 300, height: 400, mode: 'cover' })
+    expect([r.w, r.h]).toEqual([300, 400])
+    expect([r.drawW, r.drawH]).toEqual([400, 400])
+    expect(r.dx).toBe(-50)
+  })
+
+  it('clamps to the source when noUpscale is set with both dimensions', () => {
+    const r = computeSize(100, 100, { width: 500, height: 500, mode: 'fit', noUpscale: true })
+    expect([r.w, r.h]).toEqual([100, 100])
+  })
+
+  it('stretch is free to upscale past the source', () => {
+    const r = computeSize(100, 100, { width: 400, height: 200, mode: 'stretch' })
+    expect(r).toMatchObject({ w: 400, h: 200, drawW: 400, drawH: 200 })
+  })
 })

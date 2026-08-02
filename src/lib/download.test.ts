@@ -44,4 +44,43 @@ describe('createZip', () => {
     const bytes = new Uint8Array(await blob.arrayBuffer())
     expect(new DataView(bytes.buffer).getUint32(0, true)).toBe(LOCAL_HEADER)
   })
+
+  it('produces a valid (empty) archive for an empty file list', async () => {
+    const bytes = new Uint8Array(await (await createZip([])).arrayBuffer())
+    // Just the 22-byte End-Of-Central-Directory record, zero entries.
+    expect(bytes.length).toBe(22)
+    const view = new DataView(bytes.buffer)
+    expect(view.getUint32(0, true)).toBe(EOCD)
+    expect(view.getUint16(10, true)).toBe(0)
+  })
+
+  it('computes CRC-32 correctly (standard "123456789" test vector)', async () => {
+    const data = new TextEncoder().encode('123456789')
+    const bytes = new Uint8Array(await (await createZip([{ name: 'n', data }])).arrayBuffer())
+    // CRC-32 lives at offset 14 of the local file header. The canonical
+    // check value for "123456789" is 0xCBF43926.
+    expect(new DataView(bytes.buffer).getUint32(14, true)).toBe(0xcbf43926)
+  })
+
+  it('round-trips a UTF-8 (non-ASCII) filename and sets the UTF-8 flag', async () => {
+    const name = 'café-photo.jpg'
+    const nameBytes = new TextEncoder().encode(name)
+    const bytes = new Uint8Array(await (await createZip([{ name, data: new Uint8Array() }])).arrayBuffer())
+    const view = new DataView(bytes.buffer)
+    expect(view.getUint16(6, true) & 0x0800).toBe(0x0800) // UTF-8 general-purpose flag
+    expect(view.getUint16(26, true)).toBe(nameBytes.length) // filename length in bytes
+    const decoded = new TextDecoder().decode(bytes.slice(30, 30 + nameBytes.length))
+    expect(decoded).toBe(name)
+  })
+
+  it('places the second entry at the correct byte offset', async () => {
+    const files = [
+      { name: 'a.txt', data: new TextEncoder().encode('aaa') }, // 30 + 5 + 3 = 38 bytes
+      { name: 'b.txt', data: new TextEncoder().encode('bbbb') },
+    ]
+    const bytes = new Uint8Array(await (await createZip(files)).arrayBuffer())
+    const view = new DataView(bytes.buffer)
+    expect(view.getUint32(0, true)).toBe(LOCAL_HEADER)
+    expect(view.getUint32(38, true)).toBe(LOCAL_HEADER) // second local header
+  })
 })

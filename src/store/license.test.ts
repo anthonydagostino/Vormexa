@@ -59,6 +59,36 @@ describe('license store', () => {
     expect(spy).not.toHaveBeenCalled()
   })
 
+  it('refresh keeps last-known Pro state when the network fails (offline)', async () => {
+    useLicense.setState({ key: 'K', instanceId: 'i', status: 'active', valid: true, activatedAt: 1 })
+    vi.spyOn(globalThis, 'fetch').mockRejectedValue(new TypeError('offline'))
+    await useLicense.getState().refresh()
+    // Pro must not silently drop on a flaky connection.
+    expect(useLicense.getState().valid).toBe(true)
+  })
+
+  it('refresh downgrades to Free when the server says the key is invalid', async () => {
+    useLicense.setState({ key: 'K', instanceId: 'i', status: 'active', valid: true, activatedAt: 1 })
+    mockFetch({ valid: false, error: 'expired', license_key: { status: 'expired' }, instance: null })
+    await useLicense.getState().refresh()
+    const s = useLicense.getState()
+    expect(s.valid).toBe(false)
+    expect(s.status).toBe('expired')
+  })
+
+  it('refresh is a no-op (no network) when there is no activated key', async () => {
+    const spy = mockFetch({})
+    await useLicense.getState().refresh()
+    expect(spy).not.toHaveBeenCalled()
+  })
+
+  it('stays Free if the server reports activated but returns no instance', async () => {
+    mockFetch({ activated: true, error: null, license_key: { status: 'active' }, instance: null })
+    const res = await useLicense.getState().activate('WEIRD')
+    expect(res.ok).toBe(false)
+    expect(useLicense.getState().valid).toBe(false)
+  })
+
   it('deactivate clears Pro state', async () => {
     useLicense.setState({
       key: 'K',

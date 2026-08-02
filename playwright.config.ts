@@ -8,6 +8,9 @@ import { defineConfig, devices } from '@playwright/test'
  * PW_CHROMIUM_PATH lets CI / sandboxes point at a pre-installed browser.
  */
 const executablePath = process.env.PW_CHROMIUM_PATH || undefined
+// Extra Chromium flags (comma-separated), e.g. PW_CHROMIUM_ARGS=--no-sandbox
+// for running headless in a root container / CI sandbox.
+const chromiumArgs = process.env.PW_CHROMIUM_ARGS?.split(',').filter(Boolean) || []
 const PORT = Number(process.env.PW_PORT || 4330)
 
 export default defineConfig({
@@ -22,7 +25,7 @@ export default defineConfig({
   use: {
     baseURL: `http://127.0.0.1:${PORT}`,
     trace: 'on-first-retry',
-    launchOptions: executablePath ? { executablePath } : {},
+    launchOptions: { ...(executablePath ? { executablePath } : {}), args: chromiumArgs },
   },
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
   webServer: {

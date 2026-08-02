@@ -18,7 +18,8 @@ export const VIDEO_CONTAINERS: { value: VideoContainer; label: string }[] = [
   { value: 'gif', label: 'Animated GIF' },
 ]
 
-function codecArgs(container: VideoContainer, crf: number): string[] {
+/** Build the encoder args for a container/quality. Exported for testing. */
+export function codecArgs(container: VideoContainer, crf: number): string[] {
   switch (container) {
     case 'webm':
       return ['-c:v', 'libvpx', '-b:v', '0', '-crf', String(crf), '-c:a', 'libvorbis']
@@ -48,7 +49,7 @@ function codecArgs(container: VideoContainer, crf: number): string[] {
 
 export type CompressLevel = 'light' | 'balanced' | 'strong' | 'extreme'
 
-const CRF_BY_LEVEL: Record<CompressLevel, number> = {
+export const CRF_BY_LEVEL: Record<CompressLevel, number> = {
   light: 22,
   balanced: 27,
   strong: 32,
@@ -302,7 +303,8 @@ export async function toGif(file: File, opt: GifOptions): Promise<Blob> {
   return new Blob([toBufferSource(outputs[0].data)], { type: 'image/gif' })
 }
 
-function mimeForContainer(container: VideoContainer | string): string {
+/** Map a container/extension to its MIME type. Exported for testing. */
+export function mimeForContainer(container: VideoContainer | string): string {
   switch (container) {
     case 'webm':
       return 'video/webm'

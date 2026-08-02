@@ -16,4 +16,18 @@ describe('isBatchGated', () => {
     expect(isBatchGated(4, 3, false)).toBe(true)
     expect(isBatchGated(50, 3, false)).toBe(true)
   })
+  it('treats the exact boundary as allowed (strictly greater-than gates)', () => {
+    expect(isBatchGated(3, 3, false)).toBe(false)
+    expect(isBatchGated(4, 3, false)).toBe(true)
+  })
+  it('supports a zero allowance (any file gates a Free user)', () => {
+    expect(isBatchGated(0, 0, false)).toBe(false)
+    expect(isBatchGated(1, 0, false)).toBe(true)
+  })
+  it('never gates an empty job', () => {
+    expect(isBatchGated(0, 3, false)).toBe(false)
+  })
+  it('Pro overrides even a zero allowance', () => {
+    expect(isBatchGated(10, 0, true)).toBe(false)
+  })
 })
